@@ -1,0 +1,11 @@
+spring:
+  application.name: portalasig-ms-dashboard
+  cloud:
+    config:
+      label: ms
+  config:
+    import: 'configserver:http://localhost:8888'
+
+  profiles.default: local
+
+
