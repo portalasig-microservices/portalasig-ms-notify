@@ -1,4 +1,4 @@
-package com.portalasig.ms.dashboard.server.config;
+package com.portalasig.ms.dashboard.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
