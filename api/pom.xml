@@ -5,15 +5,15 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.portalasig.ms</groupId>
-    <artifactId>portalasig-ms-dashboard-parent</artifactId>
+    <artifactId>portalasig-ms-site-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>portalasig-ms-dashboard-api</artifactId>
+  <artifactId>portalasig-ms-site-api</artifactId>
   <packaging>jar</packaging>
 
   <name>${project.artifactId}</name>
-  <description>PortalAsig Dashboard API</description>
+  <description>PortalAsig Site API</description>
 
   <properties>
     <maven.compiler.source>17</maven.compiler.source>

@@ -1,4 +1,4 @@
-package com.portalasig.ms.dashboard.config;
+package com.portalasig.ms.site.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
@@ -23,6 +23,6 @@ public class DataSourceConfiguration {
     @ConfigurationProperties(prefix = "spring.datasource")
     @Primary
     public HikariDataSource dataSource(DataSourceProperties dataSourceProperties) {
-        return createDataSource("portalAsigDashboardDataSource", dataSourceProperties.getUrl());
+        return createDataSource("portalAsigSiteDataSource", dataSourceProperties.getUrl());
     }
 }

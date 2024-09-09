@@ -1,4 +1,4 @@
-package com.portalasig.ms.dashboard.rest;
+package com.portalasig.ms.site.rest;
 
 import com.portalasig.ms.uaa.client.UserAuthenticationClient;
 import com.portalasig.ms.uaa.dto.User;
@@ -32,6 +32,6 @@ public class DemoController {
 
     @GetMapping("/test-client")
     public User testClient() {
-        return userAuthenticationClient.findUserByUsername().block();
+        return userAuthenticationClient.findUserByIdentity(23950509L).block();
     }
 }

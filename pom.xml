@@ -10,12 +10,12 @@
   </parent>
 
   <groupId>com.portalasig.ms</groupId>
-  <artifactId>portalasig-ms-dashboard-parent</artifactId>
+  <artifactId>portalasig-ms-site-parent</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>${project.artifactId}</name>
-  <description>PortalAsig Dashboard Service</description>
+  <description>PortalAsig Site Service</description>
 
   <modules>
     <module>api</module>
