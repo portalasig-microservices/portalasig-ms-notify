@@ -1,4 +1,4 @@
-package com.portalasig.ms.dashboard.dto;
+package com.portalasig.ms.site.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

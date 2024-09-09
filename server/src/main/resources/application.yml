@@ -1,5 +1,5 @@
 spring:
-  application.name: portalasig-ms-dashboard
+  application.name: portalasig-ms-site
   cloud:
     config:
       label: ms
