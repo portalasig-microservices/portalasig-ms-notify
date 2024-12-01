@@ -1,9 +1,10 @@
 package com.portalasig.ms.site.dto.course;
 
-import com.portalasig.ms.site.constant.CourseType;
+import com.opencsv.bean.CsvBindByPosition;
+import com.opencsv.bean.CsvCustomBindByPosition;
+import com.portalasig.ms.site.utils.csv.CommaSeparatedToListConverter;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,43 +13,40 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 /**
- * Represents a request to create or update a college course.
+ * Represents a course in CSV format.
  */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel(description = "A college course request")
-public class CourseRequest {
-
-    @ApiModelProperty(value = "Course id")
-    private Integer courseId;
+@ApiModel(description = "A college course csv")
+public class CsvCourse {
 
     @ApiModelProperty(value = "Course code")
-    @NotNull
+    @CsvBindByPosition(position = 0)
     private String code;
 
     @ApiModelProperty(value = "Course name")
-    @NotNull
+    @CsvBindByPosition(position = 1)
     private String name;
 
     @ApiModelProperty(value = "Course amount of credit units")
-    @NotNull
+    @CsvBindByPosition(position = 2)
     private Integer creditUnits;
 
     @ApiModelProperty(value = "Type of courses")
-    @NotNull
-    private CourseType type;
+    @CsvBindByPosition(position = 3)
+    private String type;
 
     @ApiModelProperty(value = "Course requirements")
-    @NotNull
+    @CsvBindByPosition(position = 4)
     private String requirements;
 
     @ApiModelProperty(value = "List of careers ids associated with the course")
-    @NotNull
+    @CsvCustomBindByPosition(position = 5, converter = CommaSeparatedToListConverter.class)
     private List<Integer> careers;
 
     @ApiModelProperty(value = "List of classifications ids associated with the course")
-    @NotNull
+    @CsvCustomBindByPosition(position = 6, converter = CommaSeparatedToListConverter.class)
     private List<Integer> classifications;
 }
