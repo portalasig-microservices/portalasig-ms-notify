@@ -29,8 +29,10 @@ jobs:
           mvn clean install -Dcheckstyle.skip=true
 
       # Step 4: Install all modules
-      - name: Install service modules
-        run: mvn install -Dcheckstyle.skip=true
+      - name: Install all service modules
+        run: |
+          mvn clean install -Dcheckstyle.skip=true
+          ls -R ~/.m2/repository/com/portalasig/ms/
 
       # Step 5: Verify build
       - name: Verify service build
