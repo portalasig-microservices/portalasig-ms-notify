@@ -3,18 +3,18 @@ package com.portalasig.ms.site.mapper;
 
 import com.portalasig.ms.commons.mapper.EnumStringMapper;
 import com.portalasig.ms.site.constant.CourseType;
+import com.portalasig.ms.site.domain.entity.CareerEntity;
+import com.portalasig.ms.site.domain.entity.ClassificationEntity;
 import com.portalasig.ms.site.domain.entity.CourseEntity;
-import com.portalasig.ms.site.domain.entity.SemesterEntity;
 import com.portalasig.ms.site.dto.course.Course;
 import com.portalasig.ms.site.dto.course.CourseRequest;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.MappingTarget;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Mapper(
@@ -33,30 +33,35 @@ public interface CourseMapper {
             target = "type",
             expression = "java(EnumStringMapper.fromEnumToString(request.getType()))"
     )
-    @Mapping(target = "semesters", expression = "java(new HashSet<>(Set.of(semester)))")
-    @Mapping(target = "name", source = "request.name")
-    CourseEntity toEntity(CourseRequest request, @Context SemesterEntity semester);
+    @Mapping(target = "semesters", ignore = true)
+    @Mapping(target = "careers", ignore = true)
+    @Mapping(target = "classifications", ignore = true)
+    CourseEntity toEntity(CourseRequest request);
 
     @Mapping(
             target = "type",
             expression = "java(EnumStringMapper.fromEnumToString(request.getType()))"
     )
-    @Mapping(target = "courseId", ignore = true)
+    @Mapping(target = "semesters", ignore = true)
+    @Mapping(target = "careers", ignore = true)
+    @Mapping(target = "classifications", ignore = true)
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "updatedDate", ignore = true)
-    @Mapping(target = "semesters", ignore = true)
-    void toEntityFromExisting(CourseRequest request, @Context SemesterEntity semester, @MappingTarget CourseEntity course);
+    void toEntityFromExisting(@MappingTarget CourseEntity course, CourseRequest request);
 
-    @AfterMapping
-    default void updateSemestersFromCourse(
-            CourseRequest request,
-            @Context SemesterEntity semester,
-            @MappingTarget CourseEntity course
-    ) {
-        Set<SemesterEntity> semesters = course.getSemesters();
-        semesters.clear();
-        if (semester != null) {
-            semesters.add(semester);
-        }
+    default String fromCourseTypeToString(CourseType type) {
+        return type != null ? type.getCode() : null;
+    }
+
+    default CourseType fromStringToCourseType(String type) {
+        return EnumStringMapper.fromStringToEnum(type, CourseType.class);
+    }
+
+    default List<Integer> flatCareers(Set<CareerEntity> careers) {
+        return careers.stream().map(CareerEntity::getCareerId).toList();
+    }
+
+    default List<Integer> flatClassifications(Set<ClassificationEntity> classifications) {
+        return classifications.stream().map(ClassificationEntity::getClassificationId).toList();
     }
 }

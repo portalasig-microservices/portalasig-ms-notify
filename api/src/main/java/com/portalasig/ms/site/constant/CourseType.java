@@ -7,7 +7,10 @@ import com.portalasig.ms.commons.persistence.Codeable;
 
 public enum CourseType implements Codeable<String> {
 
-    A_TYPE("A_TYPE"),
+    OPTIONAL_MANDATORY("OPTIONAL_MANDATORY"),
+    MANDATORY("MANDATORY"),
+    ELECTIVE("ELECTIVE"),
+    OTHER("OTHER"),
     INVALID("");
 
     private static final CodeToEnumMapper<String, CourseType> CODE_TO_ENUM_MAPPER =
