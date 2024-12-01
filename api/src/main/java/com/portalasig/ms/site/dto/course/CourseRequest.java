@@ -9,7 +9,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 
+/**
+ * Represents a request to create or update a college course.
+ */
 @Data
 @Builder
 @AllArgsConstructor
@@ -17,43 +21,58 @@ import lombok.NoArgsConstructor;
 @ApiModel(description = "A college course request")
 public class CourseRequest {
 
+    /**
+     * The unique identifier of the course.
+     */
     @ApiModelProperty(value = "Course id")
     private Integer courseId;
 
-    @ApiModelProperty(value = "Semester id")
-    @NotNull
-    private Integer semesterId;
-
+    /**
+     * The unique code for the course.
+     */
     @ApiModelProperty(value = "Course code")
     @NotNull
     private String code;
 
+    /**
+     * The name of the course.
+     */
     @ApiModelProperty(value = "Course name")
     @NotNull
     private String name;
 
+    /**
+     * The number of credit units assigned to the course.
+     */
     @ApiModelProperty(value = "Course amount of credit units")
     @NotNull
     private Integer creditUnits;
 
+    /**
+     * The type of course.
+     */
     @ApiModelProperty(value = "Type of courses")
     @NotNull
     private CourseType type;
 
+    /**
+     * The prerequisites for the course.
+     */
     @ApiModelProperty(value = "Course requirements")
     @NotNull
     private String requirements;
 
-    @ApiModelProperty(value = "Course section")
+    /**
+     * The list of career IDs associated with the course.
+     */
+    @ApiModelProperty(value = "List of careers ids associated with the course")
     @NotNull
-    private String section;
+    private List<Integer> careers;
 
-    @ApiModelProperty(value = "Course career")
+    /**
+     * The list of classification IDs associated with the course.
+     */
+    @ApiModelProperty(value = "List of classifications ids associated with the course")
     @NotNull
-    private String career;
-
-    @ApiModelProperty(value = "Course classification")
-    @NotNull
-    private String classification;
-
+    private List<Integer> classifications;
 }

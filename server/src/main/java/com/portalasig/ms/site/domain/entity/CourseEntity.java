@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
@@ -15,6 +17,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -46,20 +49,29 @@ public class CourseEntity extends AbstractAuditEntity {
     @NotNull
     private String requirements;
 
-    @NotNull
-    private String section;
+    // TODO ADD SECTION
 
-    @NotNull
-    private String career;
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(
+            name = "course_career",
+            joinColumns = @JoinColumn(name = "course_id"),
+            inverseJoinColumns = @JoinColumn(name = "career_id")
+    )
+    private Set<CareerEntity> careers = new HashSet<>();
 
-    @NotNull
-    private String classification;
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(
+            name = "course_classification",
+            joinColumns = @JoinColumn(name = "course_id"),
+            inverseJoinColumns = @JoinColumn(name = "classification_id")
+    )
+    private Set<ClassificationEntity> classifications = new HashSet<>();
 
     @ManyToMany(
             mappedBy = "courses",
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    private Set<SemesterEntity> semesters;
+    private Set<SemesterEntity> semesters = new HashSet<>();
 
 
     @Override

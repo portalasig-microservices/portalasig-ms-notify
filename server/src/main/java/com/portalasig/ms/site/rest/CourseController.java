@@ -10,8 +10,10 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,8 +45,9 @@ public class CourseController {
             @ApiResponse(code = 500, message = "Internal server error")
     })
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('PROFESSOR', 'ADMIN')")
     public Course upsertCourse(
-            @RequestBody @ApiParam(value = "Course Request", required = true) CourseRequest request
+            @Valid @RequestBody @ApiParam(value = "Course Request", required = true) CourseRequest request
     ) {
         return courseService.upsert(request);
     }

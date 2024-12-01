@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -17,9 +19,6 @@ public class Course {
 
     @ApiModelProperty(value = "Course id")
     private Integer courseId;
-
-    @ApiModelProperty(value = "Semester id")
-    private Integer semesterId;
 
     @ApiModelProperty(value = "Course identifier")
     private String code;
@@ -35,5 +34,11 @@ public class Course {
 
     @ApiModelProperty(value = "Course requirements")
     private String requirements;
+
+    @ApiModelProperty(value = "List of careers ids associated with the course")
+    private List<Integer> careers;
+
+    @ApiModelProperty(value = "List of classifications ids associated with the course")
+    private List<Integer> classifications;
 
 }
