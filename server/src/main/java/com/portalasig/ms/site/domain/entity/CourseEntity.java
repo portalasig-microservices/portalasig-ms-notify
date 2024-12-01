@@ -17,7 +17,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -57,7 +56,7 @@ public class CourseEntity extends AbstractAuditEntity {
             joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns = @JoinColumn(name = "career_id")
     )
-    private Set<CareerEntity> careers = new HashSet<>();
+    private Set<CareerEntity> careers;
 
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
@@ -65,13 +64,13 @@ public class CourseEntity extends AbstractAuditEntity {
             joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns = @JoinColumn(name = "classification_id")
     )
-    private Set<ClassificationEntity> classifications = new HashSet<>();
+    private Set<ClassificationEntity> classifications;
 
     @ManyToMany(
             mappedBy = "courses",
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    private Set<SemesterEntity> semesters = new HashSet<>();
+    private Set<SemesterEntity> semesters;
 
 
     @Override
