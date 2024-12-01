@@ -28,5 +28,10 @@ jobs:
           cd portalasig-commons
           mvn clean install -Dcheckstyle.skip=true
 
-      - name: Build and verify service
-        run: mvn clean verify
+      # Step 4: Install all modules
+      - name: Install service modules
+        run: mvn install -Dcheckstyle.skip=true
+
+      # Step 5: Verify build
+      - name: Verify service build
+        run: mvn clean verify -Dcheckstyle.skip=true
