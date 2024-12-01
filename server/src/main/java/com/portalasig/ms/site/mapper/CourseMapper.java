@@ -8,6 +8,7 @@ import com.portalasig.ms.site.domain.entity.ClassificationEntity;
 import com.portalasig.ms.site.domain.entity.CourseEntity;
 import com.portalasig.ms.site.dto.course.Course;
 import com.portalasig.ms.site.dto.course.CourseRequest;
+import com.portalasig.ms.site.dto.course.CsvCourse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
@@ -48,6 +49,11 @@ public interface CourseMapper {
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "updatedDate", ignore = true)
     void toEntityFromExisting(@MappingTarget CourseEntity course, CourseRequest request);
+
+    @Mapping(target = "semesters", ignore = true)
+    @Mapping(target = "careers", ignore = true)
+    @Mapping(target = "classifications", ignore = true)
+    CourseEntity toEntityFromCsv(CsvCourse courseCsv);
 
     default String fromCourseTypeToString(CourseType type) {
         return type != null ? type.getCode() : null;

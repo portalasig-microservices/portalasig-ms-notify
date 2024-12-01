@@ -4,6 +4,8 @@ import com.portalasig.ms.commons.constants.RestConstants;
 
 public final class SiteRestConstant {
 
+    public static final String CSV_PATH = "/csv";
+
     public static final class Course {
         public static final String COURSE_PATH = "/course";
         public static final String BASE_PATH = RestConstants.VERSION_ONE + COURSE_PATH;

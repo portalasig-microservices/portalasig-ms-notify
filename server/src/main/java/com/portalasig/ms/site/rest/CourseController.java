@@ -20,7 +20,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping(SiteRestConstant.Course.BASE_PATH)
@@ -65,4 +69,17 @@ public class CourseController {
         courseService.delete(courseId);
     }
 
+    @ApiOperation(value = "Import courses from CSV")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Courses imported successfully"),
+            @ApiResponse(code = 500, message = "Internal server error")
+    })
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping(SiteRestConstant.CSV_PATH)
+    public void importCoursesFromCsv(
+            @ApiParam(value = "CSV file containing course data", required = true)
+            @RequestParam MultipartFile file
+    ) throws IOException {
+        courseService.importCoursesFromCsv(file.getInputStream());
+    }
 }
