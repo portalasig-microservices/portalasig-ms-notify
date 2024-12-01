@@ -1,0 +1,23 @@
+name: Build and Verify Services
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout service repository
+        uses: actions/checkout@v3
+
+      - name: Clone common repository
+        run: |
+          git clone https://github.com/portalasig-microservices/portalasig-commons.git
+          cd portalasig-commons
+          mvn clean install 
+
+      - name: Build and verify service
+        run: mvn clean verify
