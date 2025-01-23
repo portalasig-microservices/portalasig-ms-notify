@@ -178,4 +178,12 @@ public class CourseService {
             throw new BadRequestException("Invalid csv header");
         }
     }
+
+    public Course findByCode(String courseCode) {
+        return courseRepository.findByCode(courseCode)
+                .map(courseMapper::toDto)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(String.format("Course with code=%s not found", courseCode))
+                );
+    }
 }

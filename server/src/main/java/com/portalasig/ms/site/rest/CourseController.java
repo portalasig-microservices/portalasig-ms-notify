@@ -42,6 +42,14 @@ public class CourseController {
         return courseService.findAll(pageable);
     }
 
+    @ApiOperation(value = "Get course by code", response = Course.class)
+    @GetMapping(SiteRestConstant.Course.COURSE_CODE_PATH)
+    public Course getCourseByCode(
+            @PathVariable @ApiParam(value = "Course code", required = true) String courseCode
+    ) {
+        return courseService.findByCode(courseCode);
+    }
+
     @ApiOperation(value = "Upsert a course", response = Course.class)
     @ApiResponses({
             @ApiResponse(code = 200, message = "Course upserted successfully"),
