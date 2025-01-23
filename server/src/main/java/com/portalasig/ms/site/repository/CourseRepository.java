@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface CourseRepository extends JpaRepository<CourseEntity, Integer> {
     Optional<CourseEntity> findByCode(@NotNull String code);
+
+    void deleteByCode(@NotNull String code);
 }
