@@ -9,7 +9,6 @@ public final class SiteRestConstant {
     public static final class Course {
         public static final String COURSE_PATH = "/course";
         public static final String BASE_PATH = RestConstants.VERSION_ONE + COURSE_PATH;
-        public static final String COURSE_ID_PATH = "/{courseId:\\d+}";
         public static final String COURSE_CODE_PATH = "/{courseCode}";
     }
 

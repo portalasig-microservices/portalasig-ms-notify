@@ -8,6 +8,7 @@ import com.portalasig.ms.commons.rest.exception.BadRequestException;
 import com.portalasig.ms.commons.rest.exception.ConflictException;
 import com.portalasig.ms.commons.rest.exception.ResourceNotFoundException;
 import com.portalasig.ms.commons.rest.exception.SystemErrorException;
+import com.portalasig.ms.site.constant.CourseType;
 import com.portalasig.ms.site.domain.entity.CareerEntity;
 import com.portalasig.ms.site.domain.entity.ClassificationEntity;
 import com.portalasig.ms.site.domain.entity.CourseEntity;
@@ -63,6 +64,7 @@ public class CourseService {
     @Transactional
     public Course upsert(CourseRequest request) {
         CourseEntity course;
+        validateRequest(request);
         List<CareerEntity> careers = careerRepository.findAllById(request.getCareers());
         List<ClassificationEntity> classifications = classificationRepository.findAllById(request.getClassifications());
         if (careers.isEmpty() || classifications.isEmpty()) {
@@ -94,19 +96,25 @@ public class CourseService {
         return courseMapper.toDto(course);
     }
 
+    private void validateRequest(CourseRequest request) {
+        if (request.getType() == null || CourseType.INVALID.equals(request.getType())) {
+            throw new BadRequestException("Course type is invalid");
+        }
+    }
+
     @Transactional
-    public void delete(Integer courseId) {
-        courseRepository.findById(courseId).orElseThrow(
+    public void deleteCourseByCode(String courseCode) {
+        courseRepository.findByCode(courseCode).orElseThrow(
                 () -> new ResourceNotFoundException(
-                        String.format("Course with course_id=%s not found", courseId)
+                        String.format("Course with code=%s not found", courseCode)
                 )
         );
         try {
-            courseRepository.deleteById(courseId);
+            courseRepository.deleteByCode(courseCode);
         } catch (Exception e) {
-            log.error("Error deleting course with course_id={}", courseId, e);
+            log.error("Error deleting course with code={}", courseCode, e);
             throw new ResourceNotFoundException(
-                    String.format("Error deleting course with course_id=%s", courseId)
+                    String.format("Error deleting course with code=%s", courseCode)
             );
         }
     }

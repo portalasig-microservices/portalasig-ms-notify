@@ -64,17 +64,17 @@ public class CourseController {
         return courseService.upsert(request);
     }
 
-    @ApiOperation(value = "Delete a course")
+    @ApiOperation(value = "Delete a course by course code")
     @ApiResponses({
             @ApiResponse(code = 200, message = "Course deleted successfully"),
             @ApiResponse(code = 404, message = "Course not found"),
             @ApiResponse(code = 500, message = "Internal server error")
     })
-    @DeleteMapping(SiteRestConstant.Course.COURSE_ID_PATH)
-    public void deleteCourse(
-            @PathVariable @ApiParam(value = "Course id", required = true) Integer courseId
+    @DeleteMapping(SiteRestConstant.Course.COURSE_CODE_PATH)
+    public void deleteCourseByCode(
+            @PathVariable @ApiParam(value = "Course id", required = true) String courseCode
     ) {
-        courseService.delete(courseId);
+        courseService.deleteCourseByCode(courseCode);
     }
 
     @ApiOperation(value = "Import courses from CSV")
