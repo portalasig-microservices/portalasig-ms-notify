@@ -48,20 +48,13 @@ public interface CourseMapper {
     @Mapping(target = "classifications", ignore = true)
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "updatedDate", ignore = true)
+    @Mapping(target = "courseId", ignore = true)
     void toEntityFromExisting(@MappingTarget CourseEntity course, CourseRequest request);
 
     @Mapping(target = "semesters", ignore = true)
     @Mapping(target = "careers", ignore = true)
     @Mapping(target = "classifications", ignore = true)
     CourseEntity toEntityFromCsv(CsvCourse courseCsv);
-
-    default String fromCourseTypeToString(CourseType type) {
-        return type != null ? type.getCode() : null;
-    }
-
-    default CourseType fromStringToCourseType(String type) {
-        return EnumStringMapper.fromStringToEnum(type, CourseType.class);
-    }
 
     default List<Integer> flatCareers(Set<CareerEntity> careers) {
         return careers.stream().map(CareerEntity::getCareerId).toList();

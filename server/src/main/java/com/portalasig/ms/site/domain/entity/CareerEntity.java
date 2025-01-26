@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,6 +36,9 @@ public class CareerEntity extends AbstractAuditEntity {
     @NotNull
     @Column(name = "name", length = 32)
     private String name;
+
+    @Transient
+    private boolean shouldBeRemoved;
 
     @ManyToMany(mappedBy = "careers", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @EqualsAndHashCode.Exclude
