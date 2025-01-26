@@ -5,10 +5,10 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.exceptions.CsvValidationException;
 import com.portalasig.ms.commons.rest.dto.Paginated;
 import com.portalasig.ms.commons.rest.exception.BadRequestException;
-import com.portalasig.ms.commons.rest.exception.ConflictException;
 import com.portalasig.ms.commons.rest.exception.ResourceNotFoundException;
 import com.portalasig.ms.commons.rest.exception.SystemErrorException;
 import com.portalasig.ms.site.constant.CourseType;
+import com.portalasig.ms.site.converter.CourseConverter;
 import com.portalasig.ms.site.domain.entity.CareerEntity;
 import com.portalasig.ms.site.domain.entity.ClassificationEntity;
 import com.portalasig.ms.site.domain.entity.CourseEntity;
@@ -36,6 +36,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
@@ -49,6 +51,8 @@ public class CourseService {
     private final ClassificationRepository classificationRepository;
 
     private final CourseMapper courseMapper;
+
+    private final CourseConverter courseConverter;
 
     @Value("${site.tools.courses.csv.input-header}")
     private final HashSet<String> inputCsvHeader;
@@ -70,30 +74,39 @@ public class CourseService {
         if (careers.isEmpty() || classifications.isEmpty()) {
             throw new ResourceNotFoundException("No careers or classifications found. Skipping Course upsert");
         }
-        if (request.getCourseId() == null) {
-            if (courseRepository.findByCode(request.getCode()).isPresent()) {
-                throw new ConflictException(
-                        String.format("Course with code=%s already exists. Skipping Course creation", request.getCode())
-                );
-            }
+        Optional<CourseEntity> courseEntity = courseRepository.findByCode(request.getCode());
+        if (courseEntity.isEmpty()) {
             course = courseMapper.toEntity(request);
             course.setCareers(new HashSet<>(careers));
             course.setClassifications(new HashSet<>(classifications));
         } else {
-            course = courseRepository.findById(request.getCourseId()).orElseThrow(
-                    () -> new ResourceNotFoundException(
-                            String.format("Course with course_id=%s not found. Skipping update", request.getCourseId())
-                    )
-            );
-            course.getCareers().clear();
-            course.getClassifications().clear();
-            course.setCareers(new HashSet<>(careers));
-            course.setClassifications(new HashSet<>(classifications));
+            course = courseEntity.get();
             courseMapper.toEntityFromExisting(course, request);
+            updateClassifications(course, request);
+            updateCareers(course, request);
+            // TODO: Implement semester logic
+            // updateSemesters(course, request);
         }
 
         course = courseRepository.save(course);
         return courseMapper.toDto(course);
+    }
+
+    private void updateClassifications(CourseEntity course, CourseRequest request) {
+        if (request.getClassifications() == null) {
+            return;
+        }
+        List<ClassificationEntity> incomingClassifications =
+                classificationRepository.findAllByClassificationIdIn(request.getClassifications());
+        courseConverter.updateClassifications(course, new HashSet<>(incomingClassifications));
+    }
+
+    private void updateCareers(CourseEntity course, CourseRequest request) {
+        if (request.getCareers() == null) {
+            return;
+        }
+        Set<CareerEntity> incomingCareers = new HashSet<>(careerRepository.findAllById(request.getCareers()));
+        courseConverter.updateCareers(course, incomingCareers);
     }
 
     private void validateRequest(CourseRequest request) {
