@@ -1,5 +1,5 @@
 spring:
-  application.name: portalasig-ms-site
+  application.name: portalasig-ms-notify
   cloud:
     config:
       label: ms

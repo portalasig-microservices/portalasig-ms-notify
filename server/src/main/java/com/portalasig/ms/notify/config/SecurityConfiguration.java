@@ -1,4 +1,4 @@
-package com.portalasig.ms.site.config;
+package com.portalasig.ms.notify.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
