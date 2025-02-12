@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de la Facultad de Ciencias - UCV</title>
+
+    <style th:utext="${external_css}"></style>  <!-- Inline CSS dynamically injected -->
+</head>
+
+<body>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">Portal de sitios web de asignaturas de la Facultad de Ciencias - UCV</h3>
+    </div>
+
+    <div class="panel-body">
+        <p th:utext="${message}">Default message here.</p>
+        <br>
+        <br>
+        <p><b th:text="${by}">Default Name</b></p>
+    </div>
+
+    <div class="panel-footer text-center">
+        <p>Universidad Central de Venezuela</p>
+        <p>Facultad de Ciencias</p>
+        <p>Paseo Los Ilustres Urb. Valle Abajo. Código Postal 1040. Caracas-Venezuela</p>
+    </div>
+</div>
+
+</body>
+</html>

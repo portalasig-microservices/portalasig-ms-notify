@@ -7,16 +7,28 @@ import com.portalasig.ms.commons.persistence.Codeable;
 
 public enum EmailTemplate implements Codeable<String> {
 
-    TEST_TEMPLATE("TEST_TEMPLATE"),
-    INVALID("");
+    APP_NOTIFICATION("APP_NOTIFICATION", "app-notification"),
+    SIMPLE_MESSAGE("SIMPLE_MESSAGE", "simple-message"),
+    INVALID("", null);
 
     private static final CodeToEnumMapper<String, EmailTemplate> CODE_TO_ENUM_MAPPER =
             new CodeToEnumMapper<>(EmailTemplate.class);
 
     final String code;
 
-    EmailTemplate(String code) {
+    final String templateName;
+
+    public final boolean isValid() {
+        return this != INVALID;
+    }
+
+    public final String getTemplateName() {
+        return templateName;
+    }
+
+    EmailTemplate(String code, String templateName) {
         this.code = code;
+        this.templateName = templateName;
     }
 
     @JsonCreator

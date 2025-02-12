@@ -23,17 +23,19 @@ public class EmailService {
     private final TemplateService templateService;
     @Value("${spring.mail.username}")
     private String emailDispatcher;
+    private final String TEXT_HTML_CHARSET_UTF8 = "text/html; charset=utf-8";
 
     public Email sendEmail(EmailRequest request) {
-        String htmlContent = templateService.createContentFromTemplate(
+        String htmlContent = templateService.processEmailTemplate(
                 request.getTemplate(),
                 request.getTemplateConfiguration()
         );
         MimeMessage message = mailSender.createMimeMessage();
         try {
             message.setFrom(new InternetAddress(emailDispatcher));
+            message.setSubject(request.getSubject());
             message.setRecipients(MimeMessage.RecipientType.TO, InternetAddress.parse(request.getEmailTo()));
-            message.setContent(htmlContent, "text/html; charset=utf-8");
+            message.setContent(htmlContent, TEXT_HTML_CHARSET_UTF8);
             log.info("Sending email to: {}", request.getEmailTo());
             mailSender.send(message);
         } catch (MessagingException exception) {
