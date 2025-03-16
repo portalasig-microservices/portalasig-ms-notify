@@ -26,9 +26,9 @@ public class EmailController {
 
     @ApiOperation(value = "Send email", response = Email.class)
     @PostMapping
-    public Email sendEmail(
+    public void sendEmail(
             @Valid @RequestBody EmailRequest request
     ) {
-        return emailService.sendEmail(request);
+        emailService.publishEmailEvent(request);
     }
 }
