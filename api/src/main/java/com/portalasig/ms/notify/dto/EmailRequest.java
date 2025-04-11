@@ -1,6 +1,5 @@
 package com.portalasig.ms.notify.dto;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.portalasig.ms.notify.constant.EmailTemplate;
 import io.swagger.annotations.ApiModelProperty;
 import jakarta.validation.constraints.NotNull;
@@ -29,5 +28,5 @@ public class EmailRequest {
 
     @ApiModelProperty(value = "Email configuration")
     @NotNull
-    private JsonNode templateConfiguration;
+    private Object templateConfiguration;
 }

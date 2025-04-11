@@ -1,6 +1,7 @@
 package com.portalasig.ms.notify.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.portalasig.ms.commons.rest.exception.BadRequestException;
 import com.portalasig.ms.notify.constant.EmailTemplate;
 import com.portalasig.ms.notify.utils.TemplateUtils;
@@ -22,6 +23,7 @@ import java.util.function.Function;
 public class TemplateService {
 
     private final TemplateEngine templateEngine;
+    private final ObjectMapper objectMapper;
 
     @Value("classpath:static/css/style.css")
     private Resource baseCss;
@@ -48,15 +50,30 @@ public class TemplateService {
             }
     );
 
-    public String processEmailTemplate(EmailTemplate template, JsonNode templateConfiguration) {
+    public String processEmailTemplate(EmailTemplate template, Object templateConfiguration) {
+        JsonNode templateConfigurationJson = getTemplateConfigurationJson(templateConfiguration);
         if (!template.isValid()) {
             throw new BadRequestException("Template not found");
         }
+
+        if (templateConfigurationJson == null) {
+            throw new BadRequestException("Invalid template_configuration");
+        }
+
         Context context = new Context();
         Map<String, Object> templateConfigurationMap = TEMPLATE_CONFIGURATION
                 .get(template)
-                .apply(templateConfiguration);
+                .apply(templateConfigurationJson);
         context.setVariables(templateConfigurationMap);
         return templateEngine.process(template.getTemplateName(), context);
+    }
+
+    private JsonNode getTemplateConfigurationJson(Object templateConfiguration) {
+        try {
+            return objectMapper.valueToTree(templateConfiguration);
+        } catch (Exception e) {
+            log.error("Error parsing template_configuration={}", templateConfiguration, e);
+            return null;
+        }
     }
 }
