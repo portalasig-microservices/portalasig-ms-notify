@@ -18,6 +18,9 @@ import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 
+/**
+ * Event listener that processes {@link EmailEvent} and sends emails asynchronously.
+ */
 @Component
 @Slf4j
 @RequiredArgsConstructor
@@ -26,10 +29,20 @@ public class EmailEventListener {
     private final EmailMapper emailMapper;
     private final TemplateService templateService;
     private final JavaMailSender mailSender;
+
     @Value("${spring.mail.username}")
     private String emailDispatcher;
-    public final String TEXT_HTML_CHARSET_UTF8 = "text/html; charset=utf-8";
 
+    /**
+     * The MIME type used for HTML email content.
+     */
+    public static final String TEXT_HTML_CHARSET_UTF8 = "text/html; charset=utf-8";
+
+    /**
+     * Handles {@link EmailEvent} asynchronously and triggers the email sending process.
+     *
+     * @param event the email event to process
+     */
     @Async
     @EventListener
     public void onEvent(EmailEvent event) {
@@ -39,6 +52,12 @@ public class EmailEventListener {
         // TODO: Store the email status information and the request in the database
     }
 
+    /**
+     * Sends an email based on the given request using a templated HTML message.
+     *
+     * @param request the email request containing recipient, subject, template, etc.
+     * @return the {@link Email} object representing the sent email metadata
+     */
     public Email sendEmail(EmailRequest request) {
         String htmlContent = templateService.processEmailTemplate(
                 request.getTemplate(),

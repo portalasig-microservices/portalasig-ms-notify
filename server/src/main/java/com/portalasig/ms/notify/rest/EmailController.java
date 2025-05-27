@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * REST controller responsible for handling email dispatch requests.
+ */
 @RestController
 @RequestMapping(RestConstants.VERSION_ONE + NotifyRestConstants.EMAIL)
 @RequiredArgsConstructor
@@ -24,6 +27,11 @@ public class EmailController {
 
     private final EmailService emailService;
 
+    /**
+     * Receives and processes email sending requests.
+     *
+     * @param request the email request containing recipient, template, and configuration
+     */
     @ApiOperation(value = "Send email", response = Email.class)
     @PostMapping
     public void sendEmail(
