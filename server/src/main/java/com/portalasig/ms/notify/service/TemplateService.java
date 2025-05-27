@@ -17,6 +17,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+/**
+ * Service for processing email templates based on {@link EmailTemplate} and
+ * configuration data passed as JSON.
+ */
 @RequiredArgsConstructor
 @Service
 @Slf4j
@@ -50,6 +54,14 @@ public class TemplateService {
             }
     );
 
+    /**
+     * Processes the given {@link EmailTemplate} with the provided template configuration.
+     *
+     * @param template              the email template enum
+     * @param templateConfiguration the configuration object for the template
+     * @return the rendered template as a String
+     * @throws BadRequestException if the template is invalid or configuration is null
+     */
     public String processEmailTemplate(EmailTemplate template, Object templateConfiguration) {
         JsonNode templateConfigurationJson = getTemplateConfigurationJson(templateConfiguration);
         if (!template.isValid()) {
@@ -68,6 +80,12 @@ public class TemplateService {
         return templateEngine.process(template.getTemplateName(), context);
     }
 
+    /**
+     * Converts the given object to a {@link JsonNode} using Jackson.
+     *
+     * @param templateConfiguration the configuration object to convert
+     * @return the {@link JsonNode} representation of the object or null if parsing fails
+     */
     private JsonNode getTemplateConfigurationJson(Object templateConfiguration) {
         try {
             return objectMapper.valueToTree(templateConfiguration);

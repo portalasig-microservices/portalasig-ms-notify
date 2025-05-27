@@ -8,6 +8,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * DTO representing a request to send an email.
+ */
 @Data
 @Builder
 @AllArgsConstructor

@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 
+/**
+ * DTO representing an email to be sent.
+ */
 @Data
 @Builder
 @AllArgsConstructor

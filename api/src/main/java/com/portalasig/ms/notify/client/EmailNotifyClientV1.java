@@ -11,6 +11,9 @@ import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+/**
+ * Implementation of {@link EmailNotifyClient} using WebClient to send emails.
+ */
 @RequiredArgsConstructor
 @Slf4j
 public class EmailNotifyClientV1 implements EmailNotifyClient {
@@ -19,6 +22,12 @@ public class EmailNotifyClientV1 implements EmailNotifyClient {
     private final String baseUrl;
     private final ObjectMapper objectMapper;
 
+    /**
+     * Sends an application email using a configured WebClient.
+     *
+     * @param request the email request payload
+     * @return a Mono indicating completion
+     */
     @Override
     public Mono<Void> sendApplicationEmail(EmailRequest request) {
         try {
