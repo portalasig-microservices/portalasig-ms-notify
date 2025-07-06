@@ -30,6 +30,12 @@ public class EmailEventListener {
     private final TemplateService templateService;
     private final JavaMailSender mailSender;
 
+    @Value("${portalasig.notify.email.debug.enabled:true}")
+    private final boolean isEmailDebugEnabled;
+
+    @Value("${portalasig.notify.email.debug.recipient}")
+    private final String emailDebugRecipient;
+
     @Value("${spring.mail.username}")
     private String emailDispatcher;
 
@@ -64,10 +70,14 @@ public class EmailEventListener {
                 request.getTemplateConfiguration()
         );
         MimeMessage message = mailSender.createMimeMessage();
+        String recipient = request.getEmailTo();
+        if (isEmailDebugEnabled) {
+            recipient = emailDebugRecipient;
+        }
         try {
             message.setFrom(new InternetAddress(emailDispatcher));
             message.setSubject(request.getSubject());
-            message.setRecipients(MimeMessage.RecipientType.TO, InternetAddress.parse(request.getEmailTo()));
+            message.setRecipients(MimeMessage.RecipientType.TO, InternetAddress.parse(recipient));
             message.setContent(htmlContent, TEXT_HTML_CHARSET_UTF8);
             log.info("Sending email to: {}", request.getEmailTo());
             mailSender.send(message);
