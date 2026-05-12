@@ -5,29 +5,24 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.oauth2.jwt.JwtDecoders;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-/**
- * Security configuration for the Notify microservice. Sets up JWT decoding and authentication
- * requirements for all incoming requests.
+ /**
+ * Security configuration for the Notify microservice.
  */
 @Configuration
 public class SecurityConfiguration {
 
-    /**
-     * The URI of the JWT issuer used to configure the JWT decoder.
-     */
-    @Value("${portalasig.security.oauth2.authorization-server.jwt.issuer-uri}")
-    private String jwtIssuerUri;
+    @Value("${portalasig.security.jwk-set-uri}")
+    private String internalJwksUri;
 
     /**
-     * Configures the security filter chain to require authentication for all requests and sets up
-     * JWT decoding using the configured issuer URI.
+     * Configures the security filter chain for JWT resource server validation.
      *
-     * @param http the {@link HttpSecurity} instance used to configure security
-     * @return the configured {@link SecurityFilterChain}
-     * @throws Exception in case of configuration errors
+     * @param http the HTTP security builder
+     * @return configured security filter chain
+     * @throws Exception if configuration fails
      */
     @Bean
     public SecurityFilterChain clientSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -35,8 +30,8 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests(auth -> auth
                 .anyRequest().authenticated()
         );
-        http.oauth2ResourceServer(oauth -> oauth.jwt(
-                jwt -> jwt.decoder(JwtDecoders.fromIssuerLocation(jwtIssuerUri))
+        http.oauth2ResourceServer(oauth -> oauth.jwt(jwt ->
+                jwt.decoder(NimbusJwtDecoder.withJwkSetUri(internalJwksUri).build())
         ));
         return http.build();
     }
