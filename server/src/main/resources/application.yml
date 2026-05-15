@@ -6,3 +6,15 @@ spring:
   config:
     import: 'configserver:http://config-server:5859'
   profiles.default: local
+  kafka:
+    bootstrap-servers: ${PORTALASIG_KAFKA_BOOTSTRAP_SERVERS:kafka:9092}
+    consumer:
+      group-id: ${PORTALASIG_NOTIFY_KAFKA_GROUP_ID:ms-notify}
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+portalasig:
+  notify:
+    kafka:
+      topic: ${PORTALASIG_NOTIFY_KAFKA_TOPIC:portalasig.notify.events}
+      group-id: ${PORTALASIG_NOTIFY_KAFKA_GROUP_ID:ms-notify}
