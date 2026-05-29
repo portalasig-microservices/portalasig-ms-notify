@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -79,12 +80,13 @@ public class EmailEventListener {
             message.setSubject(request.getSubject());
             message.setRecipients(MimeMessage.RecipientType.TO, InternetAddress.parse(recipient));
             message.setContent(htmlContent, TEXT_HTML_CHARSET_UTF8);
-            log.info("Sending email to: {}", request.getEmailTo());
+            log.info("Sending email via SMTP: from={}, to={}, subject={}, debug_mode={}, effective_to={}",
+                    emailDispatcher, request.getEmailTo(), request.getSubject(), isEmailDebugEnabled, recipient);
             mailSender.send(message);
-        } catch (MessagingException exception) {
-            log.error("Error sending email", exception);
+            log.info("Email sent successfully to: {} (effective)", recipient);
+        } catch (MessagingException | MailException exception) {
+            log.error("Error sending email via SMTP: from={}, to={}, subject={}", emailDispatcher, recipient, request.getSubject(), exception);
         }
-        log.debug("Email has been successfully sent to: {}", request.getEmailTo());
         return emailMapper.toDto(request, Instant.now());
     }
 }

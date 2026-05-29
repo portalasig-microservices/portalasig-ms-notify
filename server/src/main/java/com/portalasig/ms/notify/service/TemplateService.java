@@ -42,6 +42,7 @@ public class TemplateService {
                 templateConfigurationMap.put("url", TemplateUtils.getOrNull(templateConfiguration, "url"));
                 templateConfigurationMap.put("url_label", TemplateUtils.getOrNull(templateConfiguration, "url_label"));
                 templateConfigurationMap.put("closing_message", TemplateUtils.getOrNull(templateConfiguration, "closing_message"));
+                templateConfigurationMap.put("logo_url", TemplateUtils.getOrNull(templateConfiguration, "logo_url"));
                 templateConfigurationMap.put("external_css", TemplateUtils.loadResource(baseCss));
                 return templateConfigurationMap;
             },

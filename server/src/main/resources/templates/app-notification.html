@@ -5,33 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${title}">Portal de la Facultad de Ciencias - UCV</title>
 
-    <style th:utext="${external_css}"></style>  <!-- Inline CSS dynamically injected -->
+    <style th:utext="${external_css}"></style>
 </head>
 
 <body>
 
 <div class="panel panel-primary">
     <div class="panel-heading">
-        <h3 class="panel-title" th:text="${title}">Default Title</h3>
+        <div class="panel-heading-content">
+            <img th:if="${logo_url}" th:src="${logo_url}" alt="Logo UCV" class="panel-logo"/>
+            <h3 class="panel-title" th:text="${title}">Portal de sitios web de asignaturas de la Facultad de Ciencias - UCV</h3>
+        </div>
     </div>
 
     <div class="panel-body">
-        <p th:if="${target}" th:text="${target}">Default User</p>
-        <br th:if="${target}"/>
-
-        <!-- Primary Message -->
-        <p th:if="${primary_body}" th:utext="${primary_body}">Default message here.</p>
-
-        <!-- Optional Second Message -->
+        <p th:if="${target}" th:text="${target}"></p>
+        <p th:if="${primary_body}" th:utext="${primary_body}"></p>
         <p th:if="${secondary_body}" th:text="${secondary_body}"></p>
-        <br th:if="${secondary_body}"/>
 
-        <!-- Dynamic Link -->
-        <a th:if="${url != null and url_label != null}" th:href="${url}" th:text="${url_label}">Default Link</a>
-        <br><br>
+        <a
+            th:if="${url != null and url_label != null}"
+            th:href="${url}"
+            th:text="${url_label}"
+            class="btn btn-primary"
+        >Ver detalle</a>
 
-        <!-- Ending Note -->
-        <p th:if="${closing_message}" th:text="${closing_message}">Default closing message.</p>
+        <p class="closing" th:if="${closing_message}" th:text="${closing_message}">Universidad Central de Venezuela — Facultad de Ciencias</p>
     </div>
 
     <div class="panel-footer text-center">

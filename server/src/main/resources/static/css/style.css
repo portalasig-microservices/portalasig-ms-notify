@@ -27,6 +27,17 @@ body {
     border-top-right-radius: 4px;
 }
 
+.panel-heading-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.panel-logo {
+    height: 48px;
+    width: auto;
+}
+
 .panel-title {
     font-weight: 300;
     font-size: 20px;
@@ -36,6 +47,35 @@ body {
 .panel-body {
     padding: 20px;
     line-height: 1.6;
+}
+
+.panel-body p {
+    margin-bottom: 12px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 18px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    margin-top: 16px;
+}
+
+.btn-primary {
+    background-color: #008cba;
+    color: #ffffff;
+    border: 1px solid #007bb5;
+}
+
+.btn-primary:hover {
+    background-color: #007bb5;
+    color: #ffffff;
+}
+
+.closing {
+    margin-top: 24px;
+    color: #4a4a4a;
 }
 
 .panel-footer {
