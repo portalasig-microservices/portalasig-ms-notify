@@ -1,0 +1,24 @@
+spring:
+  mail:
+    host: localhost
+    port: 1025
+    username: dispatcher@portalasig.ucv.ve
+  kafka:
+    listener:
+      auto-startup: false
+
+management:
+  health:
+    mail:
+      enabled: false
+
+portalasig:
+  security:
+    jwk-set-uri: http://localhost:5860/portalasig/uaa/oauth2/jwks
+  notify:
+    ms:
+      url: http://localhost:5862/portalasig/notify
+    email:
+      debug:
+        enabled: true
+        recipient: debug-recipient@portalasig.ucv.ve
